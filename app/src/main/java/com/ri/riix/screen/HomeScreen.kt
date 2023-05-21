@@ -1,5 +1,6 @@
 package com.ri.riix.screen
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,7 +21,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.LinearGradient
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,9 +44,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ri.riix.R
 import com.ri.riix.model.Category
+import com.ri.riix.ui.theme.Color6155EA
 import com.ri.riix.ui.theme.Color6655E95C
+import com.ri.riix.ui.theme.Color9154DC
 import com.ri.riix.ui.theme.Gray1A50
+import com.ri.riix.ui.theme.White20
 import com.ri.riix.ui.theme.White36
+import com.ri.riix.ui.theme.White5
 import com.ri.riix.ui.theme.White50
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,8 +81,7 @@ fun HomeScreen(
 
                 Image(
                     painter = painterResource(id = R.drawable.ic_settings),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.lighting(Color.Black, Color.Black)
+                    contentDescription = null
                 )
             }
 
@@ -89,6 +97,8 @@ fun HomeScreen(
             CategoryList(list) {
 
             }
+
+            Spacer(Modifier.height(16.dp))
 
             StartBodybuilding {
 
@@ -185,7 +195,6 @@ fun CategoryView(
 
     Column(
         modifier = Modifier
-            .padding(10.dp)
             .clickable { navigateToCategory.invoke(category) }
             .size(85.dp, 120.dp)
             .border(2.dp, White36, shape = RoundedCornerShape(8.dp)),
@@ -215,7 +224,8 @@ fun CategoryList(
 ) {
     val listState = rememberLazyListState()
 
-    LazyRow(state = listState) {
+    LazyRow(state = listState,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         items(list) { category ->
             CategoryView(
                 category,
@@ -238,34 +248,48 @@ fun StartBodybuilding(
     navigateToCategory: () -> Unit
 ) {
     Card(
-        shape = MaterialTheme.shapes.medium,
-        modifier = Modifier.fillMaxWidth()
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier.fillMaxWidth(),
+        border = BorderStroke(2.dp, White36)
     ) {
 
-        Text(
-            text = stringResource(
-                id = R.string.user_joined
-            ),
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(8.dp)
-        )
+        Column(modifier = Modifier.fillMaxWidth()
+            .background(brush = Brush.linearGradient(
+                listOf(White20, White5)
+            )),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center) {
+            Text(
+                text = "Let the \n" +
+                        "Bodybuilding Begin",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(8.dp)
+            )
 
-        Text(
-            text = stringResource(
-                id = R.string.game_over
-            ),
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(start = 8.dp)
-        )
+            Text(
+                text = "Push Start to Begin",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(start = 8.dp)
+            )
 
-        Button(
-            onClick = { navigateToCategory.invoke() },
-            modifier = Modifier.fillMaxWidth().padding(8.dp)
-        ) {
-            Text(text = stringResource(id = R.string.join_game))
+            Button(
+                onClick = { navigateToCategory.invoke() },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .width(64.dp)
+                    .padding(20.dp)
+                    .background(
+                        brush = Brush.linearGradient(
+                            listOf(Color9154DC, Color6155EA)
+                        ),
+                        shape = RoundedCornerShape(8.dp)
+                    ),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+            ) {
+                Text(text = "Start")
+            }
+            
         }
-
-
     }
 }
 
