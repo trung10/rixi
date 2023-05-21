@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.Riix" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="RiixTheme" parent="Base"/>
+    <style name="Base" parent="Theme.Riix">
+        <item name="android:windowBackground">@color/md_theme_background</item>
+    </style>
+    <style name="Riix.SplashScreen" parent="SplashScreenBase"/>
+    <style name="SplashScreenBase">
+
+        <item name="android:windowBackground">@drawable/ic_riix_violet</item>
+    </style>
+</resources>
