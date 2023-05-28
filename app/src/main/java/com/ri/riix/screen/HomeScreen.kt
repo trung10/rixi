@@ -24,6 +24,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -197,7 +198,13 @@ fun CategoryView(
         modifier = Modifier
             .clickable { navigateToCategory.invoke(category) }
             .size(85.dp, 120.dp)
-            .border(2.dp, White36, shape = RoundedCornerShape(8.dp)),
+            .border(2.dp, White36, shape = RoundedCornerShape(8.dp))
+            .background(
+                brush = Brush.linearGradient(
+                    listOf(White20, White5)
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -250,26 +257,31 @@ fun StartBodybuilding(
     Card(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier.fillMaxWidth(),
-        border = BorderStroke(2.dp, White36)
+        border = BorderStroke(2.dp, White36),
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
-
-        Column(modifier = Modifier.fillMaxWidth()
-            .background(brush = Brush.linearGradient(
-                listOf(White20, White5)
-            )),
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                brush = Brush.linearGradient(
+                    listOf(White20, White5)
+                )
+            ),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Center) {
             Text(
                 text = "Let the \n" +
                         "Bodybuilding Begin",
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(8.dp)
+                modifier = Modifier.padding(8.dp),
+                color = Color.White
             )
 
             Text(
                 text = "Push Start to Begin",
                 style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.padding(start = 8.dp)
+                modifier = Modifier.padding(start = 8.dp),
+                color = Color.White
             )
 
             Button(
