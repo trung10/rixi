@@ -250,6 +250,17 @@ fun CreatePlanScreen(
             Text(text = "+Add More", modifier = Modifier.padding(start = 5.dp))
         }
 
+        RestTime(""){
+
+        }
+
+        RestTime(""){
+
+        }
+
+        RestTime(""){
+
+        }
 
         Column(
             modifier = Modifier
@@ -318,6 +329,45 @@ fun RowScope.TableCell(
     )
 }
 
+@Composable
+fun RestTime(restString: String, onChange: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .padding(start = 22.dp, end = 22.dp, top = 22.dp)
+            .fillMaxWidth()
+            .background(
+                brush = Brush.linearGradient(listOf(White5, White20)),
+                shape = RoundedCornerShape(8.dp)
+            ),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
+            text = "Warning Time before Start of each set", color = Color8D8D8D
+        )
+
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding( bottom = 10.dp, start = 20.dp, end = 20.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
+            Text(
+                text = "30", color = Color.White
+            )
+
+            DownButton("Sec") {
+
+            }
+        }
+    }
+}
+
+
 @Preview(showBackground = false)
 @Composable
 fun GreetingPreview() {
@@ -332,6 +382,14 @@ fun GreetingPreview() {
 @Composable
 fun GreetingPreviewItem() {
     DownButton("aaaaa") {
+
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun GreetingPreviewRestTime() {
+    RestTime("") {
 
     }
 }
