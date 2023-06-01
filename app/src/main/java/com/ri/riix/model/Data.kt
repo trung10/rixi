@@ -1,4 +1,8 @@
 package com.ri.riix.model
 
-class Data {
+
+
+object Data {
+    val UUID_SERVICE_DEVICE = ""
+    val UUID_MSG_CHARACTERISTIC = ""
 }
