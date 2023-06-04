@@ -9,11 +9,11 @@ import no.nordicsemi.android.common.navigation.defineDestination
 import no.nordicsemi.android.common.navigation.viewmodel.SimpleNavigationViewModel
 
 
-val DeviceDestination = createSimpleDestination(NavigationConst.DEVICE)
+val DeviceDestination = createSimpleDestination(NavigationConst.CREATE_PLAN)
 private val Device = defineDestination(DeviceDestination) {
     val viewModel: SimpleNavigationViewModel = hiltViewModel()
 
-    ConnectDeviceScreen (
+    CreatePlanScreen (
         onNextNavigation = {/*viewModel.navigateTo(ServerDestination)*/},
         onBack = {}
     )

@@ -2,12 +2,13 @@ package com.ri.riix.navigation
 
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ri.riix.screen.device.ConnectDeviceScreen
+import com.ri.riix.screen.device.WorkOutScreen
 import no.nordicsemi.android.common.navigation.createSimpleDestination
 import no.nordicsemi.android.common.navigation.defineDestination
 import no.nordicsemi.android.common.navigation.viewmodel.SimpleNavigationViewModel
 
-val CreatePlanDestination = createSimpleDestination(NavigationConst.CREATE_PLAN)
-private val CreatePlan = defineDestination(CreatePlanDestination) {
+val ConnectDeviceDestination = createSimpleDestination(NavigationConst.DEVICE)
+private val connectDevice = defineDestination(ConnectDeviceDestination) {
     val viewModel: SimpleNavigationViewModel = hiltViewModel()
 
     ConnectDeviceScreen(
@@ -15,4 +16,19 @@ private val CreatePlan = defineDestination(CreatePlanDestination) {
         onBack = {}
     )
 }
-val CreatePlanScreenDestination = CreatePlan
+val ConnectScreenDestination = connectDevice
+
+
+
+val WorkOutDestination = createSimpleDestination(NavigationConst.WORKOUT)
+private val workout = defineDestination(WorkOutDestination) {
+    val viewModel: SimpleNavigationViewModel = hiltViewModel()
+
+    WorkOutScreen(
+        onNextNavigation = {/*viewModel.navigateTo(ServerDestination)*/ },
+        onBack = {}
+    )
+}
+val WorkoutScreenDestination = workout
+
+

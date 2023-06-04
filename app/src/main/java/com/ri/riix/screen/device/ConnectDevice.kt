@@ -10,7 +10,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -27,15 +29,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toIntRect
+import androidx.compose.ui.unit.toSize
 import com.ri.riix.R
 import com.ri.riix.ui.theme.Color00FFAB80
 import com.ri.riix.ui.theme.Color6155EA
+import com.ri.riix.ui.theme.Color747C8B
 import com.ri.riix.ui.theme.Color9154DC
 import com.ri.riix.ui.theme.White20
 import com.ri.riix.ui.theme.White5
@@ -153,7 +161,7 @@ fun ConnectDeviceScreen(
                         onClick = onNextNavigation,
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
                     ) {
-                        Text(text = "Connected")
+                        Text(text = "Connect")
                     }
                 }
 
@@ -172,10 +180,6 @@ fun WorkOutScreen(
     var planName by remember { mutableStateOf("Leg Day") }
 
     var exerciseName by remember { mutableStateOf("Squad") }
-
-    /*var textState by rememberSaveable(stateSaver = TextFieldValue.Saver) {
-        mutableStateOf(TextFieldValue())
-    }*/
 
     Column(
         modifier = Modifier
@@ -245,16 +249,18 @@ fun WorkOutScreen(
                 verticalArrangement = Arrangement.Center
             ) {
 
+                MilesToneWorkOut(current = 1, total = 3)
+
                 Image(painter = painterResource(id = R.mipmap.ic_device), contentDescription = null)
 
                 Text(
                     modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
-                    text = "Connect your RIIX Device, and \n" +
-                            "We'll Start the Count.", color = Color.White,
+                    text = "Take your spot. \n" +
+                            "We will do the rest.", color = Color.White,
                     style = TextStyle(textAlign = TextAlign.Center)
                 )
 
-                Column(
+                /*Column(
                     modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth()
@@ -274,20 +280,97 @@ fun WorkOutScreen(
                         onClick = onNextNavigation,
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
                     ) {
-                        Text(text = "Connected")
+                        Text(text = "Let's go")
                     }
+                }*/
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .width(46.dp)
+                        .padding(top = 20.dp, start = 16.dp, end = 16.dp, bottom = 10.dp)
+                        .background(
+                            brush = Brush.linearGradient(listOf(Color9154DC, Color6155EA)),
+                            shape = RoundedCornerShape(8.dp)
+                        ),
+                    onClick = onNextNavigation,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+                ) {
+                    Text(text = "Let's go")
                 }
 
                 Text(
                     text = "Skip", color = Color.White,
                     style = TextStyle(textAlign = TextAlign.Center)
                 )
-
-
             }
         }
     }
 }
+
+@Composable
+fun MilesToneWorkOut(current: Int, total: Int) {
+    var size by remember { mutableStateOf(IntSize.Zero) }
+
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .onSizeChanged {
+            size = it
+        },
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween) {
+
+        Spacer(modifier = Modifier
+            .then(
+                with(LocalDensity.current) {
+                    Modifier.size(
+                        width = (size.width / (total + 1)).toDp(),
+                        height = 10.dp
+                    )
+                }
+            )
+            .background(
+                color = Color00FFAB80,
+                shape = RoundedCornerShape(8.dp)
+            ))
+
+        Spacer(modifier = Modifier
+            .background(
+                color = Color00FFAB80,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .then(
+                with(LocalDensity.current) {
+                    Modifier.size(
+                        width = (size.width / (total + 1)).toDp(),
+                        height = 10.dp
+                    )
+                }
+            ))
+
+        Spacer(modifier = Modifier
+            .background(
+                color = Color747C8B,
+                shape = RoundedCornerShape(8.dp)
+            )
+            .then(
+                with(LocalDensity.current) {
+                    Modifier.size(
+                        width = (size.width / (total + 1)).toDp(),
+                        height = 10.dp
+                    )
+                }
+            ))
+
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+fun MilesToneWorkOutPreview() {
+    MilesToneWorkOut(1,3)
+}
+
 
 @Preview(showBackground = false)
 @Composable

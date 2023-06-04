@@ -3,8 +3,8 @@ package com.ri.riix
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.ri.riix.navigation.CreatePlanScreenDestination
 import com.ri.riix.navigation.DeviceScreenDestination
+import com.ri.riix.navigation.WorkoutScreenDestination
 import com.ri.riix.ui.theme.RiixTheme
 import dagger.hilt.android.AndroidEntryPoint
 import no.nordicsemi.android.common.navigation.NavigationView
@@ -18,7 +18,8 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 NavigationView(
                     destinations = listOf(/*LoginScreenDestination,HomeScreenDestination,
-                        CreatePlanScreenDestination*/ DeviceScreenDestination
+                        CreatePlanScreenDestination, DeviceScreenDestination*/
+                        WorkoutScreenDestination
                     )
                 )
             }
