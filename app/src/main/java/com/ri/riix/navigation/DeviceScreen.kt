@@ -12,7 +12,7 @@ private val connectDevice = defineDestination(ConnectDeviceDestination) {
     val viewModel: SimpleNavigationViewModel = hiltViewModel()
 
     ConnectDeviceScreen(
-        onNextNavigation = {/*viewModel.navigateTo(ServerDestination)*/ },
+        onNextNavigation = {viewModel.navigateTo(WorkOutDestination) },
         onBack = {}
     )
 }

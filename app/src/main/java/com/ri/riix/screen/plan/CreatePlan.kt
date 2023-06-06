@@ -40,14 +40,18 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import com.ri.riix.R
 import com.ri.riix.ui.theme.Color6155EA
+import com.ri.riix.ui.theme.Color6655E9
 import com.ri.riix.ui.theme.Color8D8D8D
 import com.ri.riix.ui.theme.Color9154DC
 import com.ri.riix.ui.theme.ColorA76CC6
+import com.ri.riix.ui.theme.ColorA86CC347
 import com.ri.riix.ui.theme.ColorCE6260
 import com.ri.riix.ui.theme.White20
+import com.ri.riix.ui.theme.White36
 import com.ri.riix.ui.theme.White5
 import com.ri.riix.utils.PopupType
 import com.ri.riix.utils.SelectPopup
@@ -288,6 +292,77 @@ fun CreatePlanScreen(
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ChooseWorkout(
+    /*viewModel: CreatePlanViewModel,*/
+    onNextNavigation: () -> Unit,
+    onBack: () -> Unit
+) {
+    var planName by remember { mutableStateOf("Leg Day") }
+
+    var exerciseName by remember { mutableStateOf("Squad") }
+
+    /*var textState by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue())
+    }*/
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(22.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
+            Image(
+                painter = painterResource(id = R.drawable.ic_back),
+                contentDescription = null
+            )
+
+            Text(text = "Choose Workout", color = colorResource(id = R.color.white))
+
+            Spacer(modifier = Modifier.width(27.dp))
+        }
+
+        Column(
+            modifier = Modifier
+                .padding(start = 22.dp, end = 22.dp, top = 22.dp)
+                .fillMaxWidth()
+                .background(
+                    brush = Brush.linearGradient(listOf(White5, White20)),
+                    shape = RoundedCornerShape(8.dp)
+                ),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
+                text = "Choose Workout", color = Color.White,
+                fontSize = 25.sp
+            )
+
+            Text(
+                modifier = Modifier.padding(top = 8.dp, start = 20.dp, end = 20.dp),
+                text = "Choose Workout you want to do today", color = Color8D8D8D
+            )
+
+            WorkoutDay("Leg Day"){
+                onNextNavigation.invoke()
+            }
+        }
+    }
+}
+
+
 @Composable
 fun DownButton(
     name: String,
@@ -300,7 +375,8 @@ fun DownButton(
             .padding(5.dp)
             .clickable {
                 showPopUp = !showPopUp
-                onClick.invoke() },
+                onClick.invoke()
+            },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {
@@ -351,7 +427,7 @@ fun RestTime(restString: String, onChange: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding( bottom = 10.dp, start = 20.dp, end = 20.dp),
+                .padding(bottom = 10.dp, start = 20.dp, end = 20.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -367,11 +443,46 @@ fun RestTime(restString: String, onChange: () -> Unit) {
     }
 }
 
+@Composable
+fun WorkoutDay(day: String, onChange: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .padding(start = 22.dp, end = 22.dp, top = 30.dp, bottom = 22.dp)
+            .fillMaxWidth()
+            .border(
+                width = 1.dp,
+                brush = Brush.linearGradient(listOf(White36, ColorA86CC347, Color6655E9)),
+                shape = RoundedCornerShape(8.dp)
+            )
+            .background(
+                brush = Brush.linearGradient(listOf(White5, White20)),
+                shape = RoundedCornerShape(8.dp)
+            ).clickable { onChange.invoke() },
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 10.dp, start = 20.dp, end = 20.dp, top = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
+            Text(
+                text = day, color = Color.White, fontSize = 18.sp
+            )
+
+            Image(painter = painterResource(id = R.drawable.ic_right), contentDescription = null)
+        }
+    }
+}
+
 
 @Preview(showBackground = false)
 @Composable
 fun GreetingPreview() {
-    CreatePlanScreen({
+    ChooseWorkout({
 
     }) {
 

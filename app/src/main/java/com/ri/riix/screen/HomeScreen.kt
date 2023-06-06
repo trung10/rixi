@@ -102,7 +102,7 @@ fun HomeScreen(
             Spacer(Modifier.height(16.dp))
 
             StartBodybuilding {
-
+                onServerNavigation.invoke()
             }
 
             /*Text(

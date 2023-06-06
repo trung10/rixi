@@ -12,7 +12,7 @@ private val Home = defineDestination(HomeDestination) {
     val viewModel: SimpleNavigationViewModel = hiltViewModel()
 
     HomeScreen(
-        onServerNavigation = {/*viewModel.navigateTo(ServerDestination)*/}
+        onServerNavigation = {viewModel.navigateTo(CreatePlanDestination)}
     )
 }
 val HomeScreenDestination = Home
