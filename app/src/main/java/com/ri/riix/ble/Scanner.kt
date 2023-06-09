@@ -9,15 +9,13 @@ import android.bluetooth.le.ScanFilter
 import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
-import android.os.ParcelUuid
-import com.ri.riix.model.Data.UUID_SERVICE_DEVICE
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.suspendCancellableCoroutine
-import java.util.UUID
+import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class Scanner constructor(
+class Scanner @Inject constructor(
     @ApplicationContext val context: Context,
     bluetoothAdapter: BluetoothAdapter
 ) {
@@ -52,12 +50,13 @@ class Scanner constructor(
 
             val scanSettings = ScanSettings.Builder()
                 .setReportDelay(0) // Set to 0 to be notified of scan results immediately.
-                .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
+                .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
                 .build()
 
             val scanFilters = listOf(
                 ScanFilter.Builder()
-                    .setServiceUuid(ParcelUuid(UUID.fromString(UUID_SERVICE_DEVICE)))
+                    //.setServiceUuid(ParcelUuid(UUID.fromString(UUID_SERVICE_DEVICE)))
+                    .setDeviceName("Counter Device")
                     .build()
             )
 
