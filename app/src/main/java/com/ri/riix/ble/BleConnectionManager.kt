@@ -6,9 +6,12 @@ import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
 import com.ri.riix.model.Data.UUID_MSG_CHARACTERISTIC
 import com.ri.riix.model.Data.UUID_SERVICE_DEVICE
+import com.ri.riix.utils.PacketMerger
 import com.ri.riix.utils.PacketSplitter
 import com.ri.riix.utils.toUUID
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import no.nordicsemi.android.ble.BleManager
 import no.nordicsemi.android.ble.ktx.asResponseFlow
 import no.nordicsemi.android.ble.ktx.suspend
@@ -23,7 +26,6 @@ class BleConnectionManager (
     var characteristic: BluetoothGattCharacteristic? = null
 
 
-
     override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
         gatt.getService(UUID_SERVICE_DEVICE.toUUID())?.let { service ->
             characteristic = service.getCharacteristic(UUID_MSG_CHARACTERISTIC.toUUID())
@@ -34,20 +36,20 @@ class BleConnectionManager (
     override fun initialize() {
         requestMtu(512).enqueue() // request Mtu-512
 
-        setNotificationCallback(characteristic)
+      /*  setNotificationCallback(characteristic)
             // Merges packets until the entire text is present in the stream [PacketMerger.merge].
-            /*.merge(*//*PacketMerger()*//*)
-            .asResponseFlow<*//*Request*//*ReadResponse>()
+            .merge(PacketMerger())
+            .asResponseFlow<String>()
             .onEach {
-                *//*it.isError?.let { isError -> _isError.emit(isError) }
+                it.isError?.let { isError -> _isError.emit(isError) }
                 it.userJoined?.let { userJoined -> _userJoined.emit(userJoined) }
                 it.question?.let { question -> _question.emit(question) }
                 it.answerId?.let { answer -> _answer.emit(answer) }
                 it.isGameOver?.let { isGameOver -> _isGameOver.emit(isGameOver) }
-                it.result?.let { results -> _result.emit(results) }*//*
+                it.result?.let { results -> _result.emit(results) }
             }
-            .launchIn(scope)*/
-        enableNotifications(characteristic).enqueue()
+            .launchIn(scope)
+        enableNotifications(characteristic).enqueue()*/
     }
 
     override fun onServicesInvalidated() {

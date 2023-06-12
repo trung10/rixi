@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -45,6 +46,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ri.riix.R
 import com.ri.riix.screen.plan.RestTime
 import com.ri.riix.ui.theme.Color00FFAB80
@@ -84,6 +86,10 @@ fun ConnectDeviceScreen(
     RequireBluetooth {
         RequireLocation {
             val workoutViewModel: WorkoutViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
+
+            workoutViewModel.scan() {
+                isConnected = true
+            }
 
             Column(
                 modifier = Modifier
@@ -194,9 +200,7 @@ fun ConnectDeviceScreen(
                                         shape = RoundedCornerShape(8.dp)
                                     ),
                                 onClick = {
-                                    workoutViewModel.scan() {
-                                        onNextNavigation.invoke()
-                                    }
+                                    if (isConnected) onNextNavigation.invoke()
                                 },
                                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
                             ) {
@@ -218,13 +222,11 @@ fun WorkOutScreen(
     onNextNavigation: () -> Unit,
     onBack: () -> Unit
 ) {
-    var planName by remember { mutableStateOf("Leg Day") }
-
-    var exerciseName by remember { mutableStateOf("Squad") }
-
     RequireBluetooth {
         RequireLocation {
-            val workoutViewModel: WorkoutViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
+            val viewModel: WorkoutViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
+
+            var exerciseName by remember { viewModel.current }
 
             Column(
                 modifier = Modifier
@@ -246,7 +248,7 @@ fun WorkOutScreen(
                         contentDescription = null
                     )
 
-                    Text(text = "Squat", color = colorResource(id = R.color.white))
+                    Text(text = exerciseName.name, color = colorResource(id = R.color.white))
 
                     Spacer(modifier = Modifier.width(27.dp))
                 }
@@ -294,11 +296,11 @@ fun WorkOutScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
 
-                        MilesToneWorkOut(current = 0, total = 4)
+                        MilesToneWorkOut(current = 0, total = exerciseName.set)
 
                         Spacer(modifier = Modifier.height(80.dp))
 
-                        WorkOutProcess(0, 3, ProcessType.REP)
+                        WorkOutProcess(0, exerciseName.rep, ProcessType.REP)
 
                         Text(
                             modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
@@ -306,30 +308,6 @@ fun WorkOutScreen(
                                     "We will do the rest.", color = Color.White,
                             style = TextStyle(textAlign = TextAlign.Center)
                         )
-
-                        /*Column(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                                .padding(top = 20.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(14.dp),
-                        ) {
-                            Button(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .width(46.dp)
-                                    .padding(10.dp)
-                                    .background(
-                                        brush = Brush.linearGradient(listOf(Color9154DC, Color6155EA)),
-                                        shape = RoundedCornerShape(8.dp)
-                                    ),
-                                onClick = onNextNavigation,
-                                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
-                            ) {
-                                Text(text = "Let's go")
-                            }
-                        }*/
 
                         Button(
                             modifier = Modifier
@@ -348,7 +326,10 @@ fun WorkOutScreen(
 
                         Text(
                             text = "Skip", color = Color.White,
-                            style = TextStyle(textAlign = TextAlign.Center)
+                            style = TextStyle(textAlign = TextAlign.Center),
+                            modifier = Modifier.clickable {
+
+                            }
                         )
                     }
                 }
