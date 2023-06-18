@@ -1,13 +1,13 @@
 package com.ri.riix.model
 
 data class Plan(
-    val list: List<Exercise>,
+    val list: List<Workout>,
     var warningTimeBeforeStartOfEachSet: Int = 10,
-    var restPeriodBetweenSets: Int = 30,
-    var restPeriodsBetweenExercises: Int = 30
+    var restPeriodBetweenSets: Int = 10,
+    var restPeriodsBetweenExercises: Int = 10
 ) {}
 
-data class Exercise(
+data class Workout(
     var name: String = "",
     var weight: Int,
     var set: Int,

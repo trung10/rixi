@@ -300,7 +300,7 @@ fun ChooseWorkout(
     onNextNavigation: () -> Unit,
     onBack: () -> Unit
 ) {
-    var planName by remember { mutableStateOf("Leg Day") }
+    var planName by remember { mutableStateOf("Fly cable and Squad") }
 
     var exerciseName by remember { mutableStateOf("Squad") }
 
@@ -355,7 +355,7 @@ fun ChooseWorkout(
                 text = "Choose Workout you want to do today", color = Color8D8D8D
             )
 
-            WorkoutDay("Leg Day"){
+            WorkoutDay("Cable fly and Squad"){
                 onNextNavigation.invoke()
             }
         }

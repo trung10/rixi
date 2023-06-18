@@ -1,6 +1,6 @@
 package com.ri.riix.screen.device
 
-import android.os.Handler
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -25,13 +25,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
@@ -46,9 +47,8 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ri.riix.R
-import com.ri.riix.screen.plan.RestTime
+import com.ri.riix.model.EXC_STATE
 import com.ri.riix.ui.theme.Color00FFAB80
 import com.ri.riix.ui.theme.Color6155EA
 import com.ri.riix.ui.theme.Color747C8B
@@ -57,7 +57,6 @@ import com.ri.riix.ui.theme.White20
 import com.ri.riix.ui.theme.White5
 import com.ri.riix.utils.RoundCircleProgressIndicator
 import com.ri.riix.utils.toTime
-import dagger.hilt.android.lifecycle.HiltViewModel
 import no.nordicsemi.android.common.permission.RequireBluetooth
 import no.nordicsemi.android.common.permission.RequireLocation
 
@@ -200,14 +199,16 @@ fun ConnectDeviceScreen(
                                         shape = RoundedCornerShape(8.dp)
                                     ),
                                 onClick = {
-                                    if (isConnected) onNextNavigation.invoke()
+                                    if (isConnected) {
+                                        onNextNavigation.invoke()
+                                        workoutViewModel.startWorkout()
+                                    }
                                 },
                                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
                             ) {
-                                Text(text = "Connect")
+                                Text(text = "Start")
                             }
                         }
-
                     }
                 }
             }
@@ -226,7 +227,11 @@ fun WorkOutScreen(
         RequireLocation {
             val viewModel: WorkoutViewModel = hiltViewModel(LocalContext.current as ComponentActivity)
 
-            var exerciseName by remember { viewModel.current }
+            //val exercise by remember { viewModel.workoutState.collectAsState()  }
+
+            val exercise by viewModel.workoutState.collectAsState()
+            val totalTime by viewModel.total.collectAsState()
+            val time by viewModel.ticks.collectAsState()
 
             Column(
                 modifier = Modifier
@@ -248,7 +253,7 @@ fun WorkOutScreen(
                         contentDescription = null
                     )
 
-                    Text(text = exerciseName.name, color = colorResource(id = R.color.white))
+                    Text(text = exercise.nameExercise ?: "", color = colorResource(id = R.color.white))
 
                     Spacer(modifier = Modifier.width(27.dp))
                 }
@@ -296,20 +301,58 @@ fun WorkOutScreen(
                         verticalArrangement = Arrangement.Center
                     ) {
 
-                        MilesToneWorkOut(current = 0, total = exerciseName.set)
+                        MilesToneWorkOut(current = exercise.currentSet ?: 0,
+                            total = exercise.totalSet ?: 0)
 
                         Spacer(modifier = Modifier.height(80.dp))
 
-                        WorkOutProcess(0, exerciseName.rep, ProcessType.REP)
+                        //todo change
+                        if (exercise.isFinish!!) {
+                            WorkOutProcess(exercise.currentRep!!, exercise.totalRep!!, exercise.exerciseState!!)
 
-                        Text(
-                            modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
-                            text = "Take your spot. \n" +
-                                    "We will do the rest.", color = Color.White,
-                            style = TextStyle(textAlign = TextAlign.Center)
-                        )
+                            Text(
+                                modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
+                                text = "Finish!", color = Color.White,
+                                style = TextStyle(textAlign = TextAlign.Center)
+                            )
 
-                        Button(
+                        } else{
+                            when (exercise.exerciseState!!) {
+                                EXC_STATE.REST -> {
+                                    WorkOutProcess(totalTime - time, totalTime, exercise.exerciseState!!)
+
+                                    Text(
+                                        modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
+                                        text = "Get Ready for new set", color = Color.White,
+                                        style = TextStyle(textAlign = TextAlign.Center)
+                                    )
+                                }
+
+                                EXC_STATE.START -> {
+                                    WorkOutProcess(totalTime - time, totalTime, exercise.exerciseState!!)
+
+                                    Text(
+                                        modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
+                                        text = "Get your reps in !", color = Color.White,
+                                        style = TextStyle(textAlign = TextAlign.Center)
+                                    )
+                                }
+
+                                EXC_STATE.WORKOUT -> {
+                                    WorkOutProcess(exercise.currentRep!!, exercise.totalRep!!, exercise.exerciseState!!)
+
+                                    Text(
+                                        modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
+                                        text = "Take your spot. \n" +
+                                                "We will do the rest.", color = Color.White,
+                                        style = TextStyle(textAlign = TextAlign.Center)
+                                    )
+                                }
+                            }
+                        }
+
+
+                        /*Button(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .width(46.dp)
@@ -328,9 +371,9 @@ fun WorkOutScreen(
                             text = "Skip", color = Color.White,
                             style = TextStyle(textAlign = TextAlign.Center),
                             modifier = Modifier.clickable {
-
+                                viewModel.readState()
                             }
-                        )
+                        )*/
                     }
                 }
             }
@@ -376,8 +419,13 @@ enum class ProcessType {
 }
 
 @Composable
-fun WorkOutProcess(current: Int, total: Int, type: ProcessType) {
+fun WorkOutProcess(current: Int, total: Int, type: EXC_STATE) {
     var size by remember { mutableStateOf(IntSize.Zero) }
+    /*var myProcess by remember {
+        mutableStateOf(if(current.toFloat()/total.toFloat() == 0.0f) 0.01f else current/total.toFloat())
+    }*/
+    /*val myTotal by total
+    val myCurrent by current*/
 
     Box(modifier = Modifier
         .fillMaxWidth()
@@ -398,7 +446,7 @@ fun WorkOutProcess(current: Int, total: Int, type: ProcessType) {
                         )
                     }
                 ),
-            progress = if(current/total == 0) 0.01f else current/total.toFloat(),
+            progress = if(current.toFloat()/total.toFloat() == 0.0f) 0.01f else current/total.toFloat(),
             color = Color00FFAB80,
             strokeWidth = 10.dp
         )
@@ -407,37 +455,36 @@ fun WorkOutProcess(current: Int, total: Int, type: ProcessType) {
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            val myType = when (type) {
+                EXC_STATE.START, EXC_STATE.REST -> {
+                    ProcessType.TIME
+                }
+
+                EXC_STATE.WORKOUT -> {
+                    ProcessType.REP
+                }
+            }
+
+            Log.e("Trung", "myCurrent $current")
+
             Text(
-                text = if (type == ProcessType.REP) "$current" else current.toTime(), color = Color.White,
+                text = if (myType == ProcessType.REP) "$current" else current.toTime(), color = Color.White,
                 style = TextStyle(textAlign = TextAlign.Center, fontSize = 50.sp)
             )
 
             Text(
-                text = if (type == ProcessType.TIME) "Sec" else "Rep", color = Color.White,
+                text = if (myType == ProcessType.TIME) "Sec" else "Rep", color = Color.White,
                 style = TextStyle(textAlign = TextAlign.Center, fontSize = 20.sp)
             )
         }
-
-        /* Spacer(modifier = Modifier
-             .background(
-                 color = if (index < current) Color00FFAB80 else Color747C8B,
-                 shape = RoundedCornerShape(8.dp)
-             )
-             .then(
-                 with(LocalDensity.current) {
-                     Modifier.size(
-                         width = (size.width / (total + 1)).toDp(),
-                         height = 10.dp
-                     )
-                 }
-             ))*/
     }
 }
 
 @Preview(showBackground = false)
 @Composable
 fun WorkOutProcessPreview() {
-    WorkOutProcess(1, 3, ProcessType.TIME)
+    //WorkOutProcess(1, 3, ProcessType.TIME)
 }
 
 @Preview(showBackground = false)
