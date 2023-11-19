@@ -12,7 +12,7 @@ import com.ri.riix.ble.ConnectionInf
 import com.ri.riix.ble.Scanner
 import com.ri.riix.core.Exercise
 import com.ri.riix.core.TimerViewModel
-import com.ri.riix.core.WorkoutRep
+import com.ri.riix.core.WorkoutEngine
 import com.ri.riix.model.COMMAND
 import com.ri.riix.model.Data
 import com.ri.riix.model.EXC_STATE
@@ -47,7 +47,7 @@ class WorkoutViewModel @Inject constructor(
     private var device: BluetoothDevice? = null
     private var plan = Data.sample
     private var exercise = plan.list.first()
-    private var workoutEngine = WorkoutRep("", Exercise.FlyCable)
+    private var workoutEngine = WorkoutEngine("", Exercise.FlyCable)
 
     private val _workoutState: MutableStateFlow<WorkoutViewState> =
         MutableStateFlow(WorkoutViewState())

@@ -3,8 +3,8 @@ package com.ri.riix.core
 import com.ri.riix.model.DEVICE_STATE
 import com.ri.riix.utils.toState
 
-class WorkoutRep(override var currentState: String,
-                 override var exercise: Exercise? = null) : WorkoutRepInf {
+class WorkoutEngine(override var currentState: String,
+                    override var exercise: Exercise? = null) : WorkoutRepInf {
 
     private var isTurnLeft = false
     private var isTurnRight = false
