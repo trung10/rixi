@@ -6,14 +6,17 @@ import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import com.ri.riix.model.Data.UUID_MSG_CHARACTERISTIC
 import com.ri.riix.model.Data.UUID_SERVICE_DEVICE
 import com.ri.riix.utils.PacketSplitter
 import com.ri.riix.utils.toUUID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import no.nordicsemi.android.ble.BleManager
+import no.nordicsemi.android.ble.ktx.asFlow
 import no.nordicsemi.android.ble.ktx.suspend
 
 class BleConnectionManager(
@@ -24,6 +27,8 @@ class BleConnectionManager(
     private val TAG = BleConnectionManager::class.java.simpleName
     var characteristic: BluetoothGattCharacteristic? = null
 
+    private val _deviceData = MutableSharedFlow<String>()
+    val deviceData = _deviceData.asSharedFlow()
 
     @SuppressLint("MissingPermission")
     override fun isRequiredServiceSupported(gatt: BluetoothGatt): Boolean {
@@ -45,35 +50,19 @@ class BleConnectionManager(
         Log.d(TAG, "initialize entry")
         requestMtu(512).enqueue() // request Mtu-512
 
-        /*setNotificationCallback(characteristic)
+        setNotificationCallback(characteristic)
             // Merges packets until the entire text is present in the stream [PacketMerger.merge].
-            .merge(PacketMerger())
+            //.merge(PacketMerger())
             .asFlow()
             .onEach {
-
-                val s = it.getStringValue(0)
-
-                Log.e("Trung", "data: $s")
-
-                it.isError?.let { isError -> _isError.emit(isError) }
-                it.userJoined?.let { userJoined -> _userJoined.emit(userJoined) }
-                it.question?.let { question -> _question.emit(question) }
-                it.answerId?.let { answer -> _answer.emit(answer) }
-                it.isGameOver?.let { isGameOver -> _isGameOver.emit(isGameOver) }
-                it.result?.let { results -> _result.emit(results) }
+                it.getStringValue(0)?.let {
+                    _deviceData.emit(it)
+                }
             }
             .launchIn(scope)
-        enableNotifications(characteristic).enqueue()*/
 
-        setNotificationCallback(characteristic).with { _, data ->
-            if (data.value != null) {
-                val value = String(data.value!!, Charsets.UTF_8)
-                Log.e(TAG, "Notification data: $value")
-            }
-        }
-        enableNotifications(characteristic).fail { _, status ->
-            Log.e(TAG, "enableNotifications: fail $status")
-        }.enqueue()
+
+        enableNotifications(characteristic).enqueue()
 
         startReadInterval()
     }
