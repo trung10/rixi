@@ -7,6 +7,11 @@ val colorStops = arrayOf(
     1.1f to Gray1A50
 )
 
+val pinkButton = Brush.linearGradient(listOf(ColorA76CC6, ColorCE6260))
+
+val grayButton = Brush.linearGradient(listOf(White50, Gray1A50))
+
+val grayBrush = Brush.linearGradient(listOf(White20, White5))
 
 /*
 val signGradient = Brush.linearGradient(
