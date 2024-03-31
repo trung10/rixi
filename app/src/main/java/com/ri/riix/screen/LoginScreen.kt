@@ -22,10 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ri.riix.R
-import com.ri.riix.ui.theme.ColorA76CC6
-import com.ri.riix.ui.theme.ColorCE6260
-import com.ri.riix.ui.theme.Gray1A50
-import com.ri.riix.ui.theme.White50
+import com.ri.riix.ui.theme.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +76,7 @@ fun LoginScreen(
                         .fillMaxWidth()
                         .width(64.dp)
                         .background(
-                            brush = Brush.linearGradient(listOf(ColorA76CC6, ColorCE6260)),
+                            brush = pinkBrush,
                             shape = RoundedCornerShape(8.dp)
                         ),
                     onClick = onClientNavigation,

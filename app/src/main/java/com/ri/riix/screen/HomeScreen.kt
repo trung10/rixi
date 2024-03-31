@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,7 +22,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -34,8 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.LinearGradient
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -46,13 +42,10 @@ import androidx.compose.ui.unit.dp
 import com.ri.riix.R
 import com.ri.riix.model.Category
 import com.ri.riix.ui.theme.Color6155EA
-import com.ri.riix.ui.theme.Color6655E95C
 import com.ri.riix.ui.theme.Color9154DC
-import com.ri.riix.ui.theme.Gray1A50
 import com.ri.riix.ui.theme.White20
 import com.ri.riix.ui.theme.White36
 import com.ri.riix.ui.theme.White5
-import com.ri.riix.ui.theme.White50
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -298,9 +291,8 @@ fun StartBodybuilding(
                     ),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
             ) {
-                Text(text = "Start")
+                Text(text = stringResource(id = R.string.start))
             }
-            
         }
     }
 }

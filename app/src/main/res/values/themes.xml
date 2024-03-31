@@ -12,6 +12,6 @@
     <style name="RiixTheme.SplashScreen" parent="RiixTheme.SplashScreenBase"/>
     <style name="RiixTheme.SplashScreenBase">
 
-        <item name="android:windowBackground">@drawable/ic_riix_violet</item>
+        <!--<item name="android:windowBackground">@drawable/ic_riix_small</item>-->
     </style>
 </resources>

@@ -12,8 +12,10 @@ val Pink40 = Color(0xFF7D5260)
 
 val White36 = Color(0x5CFFFFFF)
 val White50 = Color(0x80FFFFFF)
+val White60 = Color(0x99FFFFFF)
 val White5 = Color(0xDFFFFFF)
 val White20 = Color(0x33FFFFFF)
+val White14 = Color(0x24FFFFFF)
 val Gray1A50 = Color(0x8C1A1A1A)
 
 val ColorA76CC6 = Color(0xFFA76CC6)
@@ -37,3 +39,7 @@ val Color47A86CC3 = Color(0x47A86CC3)
 val Color5C6655E9 = Color(0x5C6655E9)
 
 val Color801877F2 = Color(0x801877F2)
+
+val ColorFF34D399 = Color(0xFF34D399)
+val ColorFF9154DC= Color(0xFF9154DC)
+val ColorFF6155EA= Color(0xFF6155EA)

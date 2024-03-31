@@ -16,7 +16,8 @@ class MainActivity : ComponentActivity() {
             RiixTheme() {
                 // A surface container using the 'background' color from the theme
                 NavigationView(
-                    destinations = listOf(LoginScreenDestination,HomeScreenDestination,
+                    destinations = listOf(LoginWithOptionScreenDestination,
+                        LoginScreenDestination,HomeScreenDestination,
                         CreatePlanScreenDestination, ConnectScreenDestination,
                         WorkoutScreenDestination
                     )
