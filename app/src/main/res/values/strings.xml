@@ -33,4 +33,9 @@
     <string name="sign_up_for_free">Sign up for free</string>
     <string name="login">Login</string>
     <string name="good_morning">Good morning</string>
+    <string name="welcome_lets_customer">Welcome ! Lets Customise Your\nRIIX Goals.</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="continue_with_facebook">Continue with Facebook</string>
+    <string name="continue_with_apple">Continue with Apple</string>
+    <string name="or">OR</string>
 </resources>

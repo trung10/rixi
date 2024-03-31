@@ -30,3 +30,10 @@ val Color00FFAB80 = Color(0x8000FFAF)
 val Color747C8B = Color(0xFF747C8B)
 val ColorA86CC347 = Color(0x47A86CC3)
 val Color6655E9 = Color(0x5C6655E9)
+val Color5F626B = Color(0xFF5F626B)
+
+val ColorWhite36 = Color(0x5CFFFFFF)
+val Color47A86CC3 = Color(0x47A86CC3)
+val Color5C6655E9 = Color(0x5C6655E9)
+
+val Color801877F2 = Color(0x801877F2)

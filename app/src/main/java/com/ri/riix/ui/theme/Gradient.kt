@@ -1,6 +1,7 @@
 package com.ri.riix.ui.theme
 
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 
 val colorStops = arrayOf(
     0.0f to White50,
@@ -12,6 +13,8 @@ val pinkButton = Brush.linearGradient(listOf(ColorA76CC6, ColorCE6260))
 val grayButton = Brush.linearGradient(listOf(White50, Gray1A50))
 
 val grayBrush = Brush.linearGradient(listOf(White20, White5))
+
+val buttonBorderBrush = Brush.linearGradient(listOf(ColorWhite36, Color47A86CC3, Color5C6655E9))
 
 /*
 val signGradient = Brush.linearGradient(
