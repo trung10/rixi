@@ -44,9 +44,19 @@
     <string name="tone_maintain">Tone &amp; Maintain</string>
     <string name="bulk_gain">Bulk &amp; Gain</string>
 
+    <string name="endomorph">Endomorph</string>
+    <string name="mesomorph">Mesomorph</string>
+    <string name="ectomorph">Ectomorph</string>
+
     <array name="goal">
         <item>@string/burn_fat_lose_weight</item>
         <item>@string/tone_maintain</item>
         <item>@string/bulk_gain</item>
+    </array>
+
+    <array name="body_type">
+        <item>@string/ectomorph</item>
+        <item>@string/mesomorph</item>
+        <item>@string/endomorph</item>
     </array>
 </resources>

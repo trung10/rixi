@@ -3,6 +3,7 @@ package com.ri.riix.screen.setGoal
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -16,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,10 +24,9 @@ import com.ri.riix.R
 import com.ri.riix.ui.theme.*
 
 @Composable
-fun SetGoal(
+fun SetBodyType(
     /*viewModel: CreatePlanViewModel,*/
     list: List<String>,
-    onClickItem: () -> Unit,
     onNext: (d: String) -> Unit,
     onBack: () -> Unit
 ) {
@@ -54,7 +53,7 @@ fun SetGoal(
                 contentDescription = null
             )
 
-            Text(text = "Set Goal", color = colorResource(id = R.color.white),
+            Text(text = "Set Body Type", color = colorResource(id = R.color.white),
                 fontSize = 16.sp)
 
             Spacer(modifier = Modifier.width(27.dp))
@@ -71,7 +70,7 @@ fun SetGoal(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Center
         ) {
-            Milestone(0, 7)
+            Milestone(1, 7)
 
             Text(
                 modifier = Modifier.padding(top = 20.dp, start = 20.dp, end = 20.dp),
@@ -81,21 +80,21 @@ fun SetGoal(
 
             Text(
                 modifier = Modifier.padding(top = 8.dp, start = 20.dp, end = 20.dp),
-                text = "Choose Your body goal", color = White60
+                text = "Choose Your body type", color = White60
             )
 
-
-            Column(
+            Row(
                 modifier = Modifier
                     .padding(DefaultPadding)
                     .fillMaxWidth(),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 repeat(3) {
-                    Button(
+                    Column(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .wrapContentWidth()
+                            .wrapContentHeight()
                             .background(
                                 brush = if (it == indexSelected) {
                                     pinkBrush
@@ -108,23 +107,43 @@ fun SetGoal(
                                 width = 1.dp,
                                 brush = buttonBorderBrush,
                                 shape = RoundedCornerShape(8.dp)
-                            ),
-                        onClick = {
-                            indexSelected = it
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                        contentPadding = PaddingValues(5.dp)
+                            ).clickable {
+                                indexSelected = it
+                            },
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Text(text = list[it])
+                        Image(
+                            modifier = Modifier.padding(6.dp),
+                            painter = when (it) {
+                                0 -> {
+                                    painterResource(id = R.drawable.ic_thin)
+                                }
+                                1 -> {
+                                    painterResource(id = R.drawable.ic_medium)
+                                }
+                                else -> {
+                                    painterResource(id = R.drawable.ic_fat)
+                                }
+                            },
+                            contentDescription = null)
+                        Text(modifier = Modifier.padding(6.dp), text = list[it],
+                            color = colorResource(id = R.color.white))}
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(DefaultPadding),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(ButtonWidth)
                         .background(
                             brush = nextBrush,
                             shape = RoundedCornerShape(8.dp)
@@ -137,60 +156,17 @@ fun SetGoal(
                     Text(text = "Next")
                 }
             }
-        }
-    }
-}
 
-@Composable
-fun Milestone(
-    current: Int,
-    total: Int
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(DefaultPadding),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        repeat(total) {
-            if (current == it) {
-                Spacer(modifier = Modifier
-                    .width(36.dp)
-                    .height(12.dp)
-                    .background(
-                        brush = pinkBrush,
-                        shape = RoundedCornerShape(8.dp)
-                    ))
-
-            } else if (current > it) {
-                Spacer(modifier = Modifier
-                    .width(36.dp)
-                    .height(12.dp)
-                    .background(
-                        color = ColorFF34D399,
-                        shape = RoundedCornerShape(8.dp)
-                    ))
-
-            } else {
-                Spacer(modifier = Modifier
-                    .width(36.dp)
-                    .height(12.dp)
-                    .background(
-                        color = White14,
-                        shape = RoundedCornerShape(8.dp)
-                    ))
-
-            }
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
 
 @Preview(showBackground = false)
 @Composable
-fun GreetingPreview() {
-    SetGoal(stringArrayResource(id = R.array.goal).toList(),
+fun GreetingAaPreview() {
+    SetBodyType(stringArrayResource(id = R.array.body_type).toList(),
         {
 
-    }, {}) {}
+        }) {}
 }
